@@ -19,4 +19,23 @@ class BrandItem(scrapy.Item):
     name = scrapy.Field()
     logo = scrapy.Field()
     remote_logo = scrapy.Field()
-    pass
+
+
+class CarItem(scrapy.Item):
+    third_id = scrapy.Field()
+    name = scrapy.Field()
+    show_name = scrapy.Field()
+    en_name = scrapy.Field()
+    brand_third_id = scrapy.Field()
+    factory_third_id = scrapy.Field()
+    factory_name = scrapy.Field()
+
+
+class CarVersionItem(scrapy.Item):
+    car_third_id = scrapy.Field()
+    third_id = scrapy.Field()
+    name = scrapy.Field()
+    refer_price = scrapy.Field()
+    year_type = scrapy.Field()
+    sale_state = scrapy.Field()
+    tt = scrapy.Field()

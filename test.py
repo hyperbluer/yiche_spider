@@ -1,6 +1,9 @@
-import os, sys, hashlib
+# -*- coding:utf-8 -*-
+import json
 
-str = 'http://image.bitautoimg.com/bt/car/default/images/logo/masterbrand/png/100/m_9_100.png'
-print hashlib.sha1(str).hexdigest()
-print hashlib.sha1(str).digest()
-print hashlib.sha1(str)
+str = u'requestDatalist["cartype_4651_5_m"]={"t125042":{"id":"125042","name":"1.5L CVT  时尚型 7座","pid":"4651","goid":"2017 款","goname":"2017 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t120188":{"id":"120188","name":"1.3T 手动欧洲柴油版5座、7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t123595":{"id":"123595","name":"1.5L 手动 标准型Ⅱ 7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"4.99","tt":"手动","salestate":"在销"},"t125061":{"id":"125061","name":"1.5L 手动 标准型 5座 SFG15-05","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t125062":{"id":"125062","name":"1.5L 手动 标准型 7座 SFG15-05","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t119126":{"id":"119126","name":"1.5L 手动 标准型 7座 SFG15-02","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t118213":{"id":"118213","name":"1.5L 手动 标准型 5座 SFG15-02","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t119127":{"id":"119127","name":"1.5L 手动 精英型居家版 7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.99","tt":"手动","salestate":"在销"},"t121361":{"id":"121361","name":"1.5L 手动 舒适型 5座、7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.99","tt":"手动","salestate":"在销"},"t117143":{"id":"117143","name":"1.5L 手动 精英型居家版 5座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.99","tt":"手动","salestate":"在销"},"t121362":{"id":"121362","name":"1.5L 手动 豪华型 5座、7座 SFG15-05","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.09","tt":"手动","salestate":"在销"},"t119128":{"id":"119128","name":"1.5L 手动 精英型旅行版 7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.19","tt":"手动","salestate":"在销"},"t117142":{"id":"117142","name":"1.5L 手动 精英型旅行版 5座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.19","tt":"手动","salestate":"在销"},"t116678":{"id":"116678","name":"1.5L 手动 尊享型	5座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t119129":{"id":"119129","name":"1.5L 手动 尊享型	7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t119473":{"id":"119473","name":"1.5L 手动 智能型 5座、7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.99","tt":"手动","salestate":"在销"},"t118212":{"id":"118212","name":"1.5L 手动 智能型	国IV/国V","pid":"4651","goid":"2015 款","goname":"2015 款","referprice":"","tt":"手动","salestate":"停销"}}'
+
+data = json.loads(str[str.find('{'):], strict=False)
+
+for k in data:
+    print data[k]['name']
