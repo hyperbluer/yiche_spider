@@ -6,6 +6,9 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.exceptions import IgnoreRequest
+import MySQLdb
+import hashlib
 
 
 class YicheSpiderSpiderMiddleware(object):
@@ -54,3 +57,38 @@ class YicheSpiderSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class IgnoreDuplicatesDownloaderMiddleware(object):
+    def __init__(self, conn, cursor):
+        self.conn = conn
+        self.cursor = cursor
+
+    @classmethod
+    def from_settings(cls, settings):
+        conn = MySQLdb.connect(
+            host=settings['MYSQL_HOST'],
+            db=settings['MYSQL_DBNAME'],
+            user=settings['MYSQL_USER'],
+            passwd=settings['MYSQL_PASSWD'],
+            port=settings['MYSQL_PORT'],
+            charset=settings['MYSQL_CHARSET'])
+        cursor = conn.cursor()
+        return cls(conn, cursor)
+
+    def process_response(self, request, response, spider):
+        page_uid = hashlib.sha1(request.url).hexdigest()
+        data_uid = hashlib.sha1(response.body).hexdigest()
+        sql = "SELECT data_uid FROM base_yiche_spider_logs WHERE page_uid = '%s' ORDER BY id DESC LIMIT 1 " % page_uid
+        self.cursor.execute(sql)
+        result = self.cursor.fetchone()
+        if result:
+            if str(data_uid) == str(result[0]):
+                raise IgnoreRequest()
+
+        sql = 'INSERT INTO base_yiche_spider_logs (page_url, page_uid, data_uid) VALUES (%s, %s, %s)'
+        params = (request.url, page_uid, data_uid)
+        self.cursor.execute(sql, params)
+        self.conn.commit()
+
+        return response

@@ -1,9 +1,21 @@
 # -*- coding:utf-8 -*-
 import json
+import pypinyin
+from pypinyin.constants import Style
+import re
 
 str = u'requestDatalist["cartype_4651_5_m"]={"t125042":{"id":"125042","name":"1.5L CVT  时尚型 7座","pid":"4651","goid":"2017 款","goname":"2017 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t120188":{"id":"120188","name":"1.3T 手动欧洲柴油版5座、7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t123595":{"id":"123595","name":"1.5L 手动 标准型Ⅱ 7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"4.99","tt":"手动","salestate":"在销"},"t125061":{"id":"125061","name":"1.5L 手动 标准型 5座 SFG15-05","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t125062":{"id":"125062","name":"1.5L 手动 标准型 7座 SFG15-05","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t119126":{"id":"119126","name":"1.5L 手动 标准型 7座 SFG15-02","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t118213":{"id":"118213","name":"1.5L 手动 标准型 5座 SFG15-02","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.59","tt":"手动","salestate":"在销"},"t119127":{"id":"119127","name":"1.5L 手动 精英型居家版 7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.99","tt":"手动","salestate":"在销"},"t121361":{"id":"121361","name":"1.5L 手动 舒适型 5座、7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.99","tt":"手动","salestate":"在销"},"t117143":{"id":"117143","name":"1.5L 手动 精英型居家版 5座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"5.99","tt":"手动","salestate":"在销"},"t121362":{"id":"121362","name":"1.5L 手动 豪华型 5座、7座 SFG15-05","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.09","tt":"手动","salestate":"在销"},"t119128":{"id":"119128","name":"1.5L 手动 精英型旅行版 7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.19","tt":"手动","salestate":"在销"},"t117142":{"id":"117142","name":"1.5L 手动 精英型旅行版 5座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.19","tt":"手动","salestate":"在销"},"t116678":{"id":"116678","name":"1.5L 手动 尊享型	5座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t119129":{"id":"119129","name":"1.5L 手动 尊享型	7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.49","tt":"手动","salestate":"在销"},"t119473":{"id":"119473","name":"1.5L 手动 智能型 5座、7座","pid":"4651","goid":"2016 款","goname":"2016 款","referprice":"6.99","tt":"手动","salestate":"在销"},"t118212":{"id":"118212","name":"1.5L 手动 智能型	国IV/国V","pid":"4651","goid":"2015 款","goname":"2015 款","referprice":"","tt":"手动","salestate":"停销"}}'
 
 data = json.loads(str[str.find('{'):], strict=False)
 
 for k in data:
-    print data[k]['name']
+    # print data[k]['name']
+    pass
+
+# print pypinyin.lazy_pinyin(u'奥迪', style=Style.FIRST_LETTER)[0]
+
+json_str = u'{ "basic": { "price": "18.49万", "saleprice": "13.13万-18.47万", "warrantypolicy": "三年或10万公里", "vechiletax": "待查", "displacement": "1.4", "gearbox": "7档 双离合", "comfuelconsumption": "5.5", "userfuelconsumption": "", "officialaccelerationtime100": "8.4", "testaccelerationtime100": "", "maxspeed": "213", "seatnum": "5" }, "body": { "color": "季风灰,#2c5866|莲花灰,#403e33|海南蓝,#4", "len": "4319", "width": "1785", "height": "1441", "wheelbase": "2629", "fronttrack": "", "reartrack": "", "weight": "1340", "fullweight": "", "mingroundclearance": "", "approachangle": "", "departureangle": "", "luggagevolume": "380", "luggagemode": "", "luggageopenmode": "掀背", "inductionluggage": "", "doornum": "5", "tooftype": "", "hoodtype": "", "roofluggagerack": "", "sportpackage": "无" }, "engine": { "position": "前置", "model": "EA211", "displacement": "1.4", "displacementml": "1395", "intakeform": "涡轮增压", "cylinderarrangetype": "L型", "cylindernum": "4", "valvetrain": "4", "valvestructure": "双顶置凸轮(DOHC)", "compressionratio": "", "bore": "", "stroke": "", "maxhorsepower": "150", "maxpower": "110", "maxpowerspeed": "5000-6000", "maxtorque": "250", "maxtorquespeed": "1750-3000", "fueltype": "汽油", "fuelgrade": "97号", "fuelmethod": "直喷", "fueltankcapacity": "50", "cylinderheadmaterial": "铝合金", "cylinderbodymaterial": "铝合金", "environmentalstandards": "国4,京5", "startstopsystem": "有" }, "gearbox": { "gearbox": "7档 双离合", "shiftpaddles": "选配" } }'
+result, number = re.subn(r'(:\s)\"(.*?)\"', ': \"\"', json_str)
+print result
+print number
+

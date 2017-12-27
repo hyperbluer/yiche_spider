@@ -32,20 +32,29 @@ class YicheSpiderPipeline(object):
     def process_item(self, item, spider):
         try:
             if isinstance(item, items.BrandItem):
+                # 品牌数据入库
                 sql = 'INSERT INTO base_yiche_car_brand (third_id, `name`, remote_logo, logo) VALUES (%s, %s, %s, %s)'
                 params = (item['third_id'], item['name'], item['remote_logo'], item['logo'])
                 self.cursor.execute(sql, params)
                 self.conn.commit()
             elif isinstance(item, items.CarItem):
+                # 车型数据入库
                 sql = 'INSERT INTO base_yiche_car (third_id, `name`, show_name, en_name, brand_third_id, factory_third_id, factory_name) VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 params = (item['third_id'], item['name'], item['show_name'], item['en_name'], item['brand_third_id'],
                           item['factory_third_id'], item['factory_name'])
                 self.cursor.execute(sql, params)
                 self.conn.commit()
             elif isinstance(item, items.CarVersionItem):
+                # 车款数据入库
                 sql = 'INSERT INTO base_yiche_car_version (third_id, `name`, car_third_id, refer_price, year_type, sale_state, tt) VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 params = (item['third_id'], item['name'], item['car_third_id'], item['refer_price'], item['year_type'],
                           item['sale_state'], item['tt'])
+                self.cursor.execute(sql, params)
+                self.conn.commit()
+            elif isinstance(item, items.CarVersionAttrItem):
+                # 车款配置数据入库
+                sql = 'INSERT INTO base_yiche_car_version_attr (car_version_third_id, content) VALUES (%s, %s)'
+                params = (item['car_version_third_id'], item['content'])
                 self.cursor.execute(sql, params)
                 self.conn.commit()
             else:
