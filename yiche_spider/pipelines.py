@@ -57,6 +57,12 @@ class YicheSpiderPipeline(object):
                 params = (item['car_version_third_id'], item['content'])
                 self.cursor.execute(sql, params)
                 self.conn.commit()
+            elif isinstance(item, items.CarWmiItem):
+                # 车款配置数据入库
+                sql = 'INSERT INTO base_car_wmi (wmi, brand_name, company_name, reg_address, car_style, batch_number) VALUES (%s, %s, %s, %s, %s, %s)'
+                params = (item['wmi'], item['brand_name'], item['company_name'], item['reg_address'], item['car_style'], item['batch_number'])
+                self.cursor.execute(sql, params)
+                self.conn.commit()
             else:
                 pass
         except MySQLdb.Error, e:

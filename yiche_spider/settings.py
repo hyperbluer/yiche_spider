@@ -53,7 +53,7 @@ DOWNLOAD_DELAY = 1
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'yiche_spider.middlewares.IgnoreDuplicatesDownloaderMiddleware': 543,
+    #'yiche_spider.middlewares.IgnoreDuplicatesDownloaderMiddleware': 543,
 }
 
 # Enable or disable extensions
