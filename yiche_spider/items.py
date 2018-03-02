@@ -30,6 +30,7 @@ class CarItem(scrapy.Item):
     brand_third_id = scrapy.Field()
     factory_third_id = scrapy.Field()
     factory_name = scrapy.Field()
+    sale_state = scrapy.Field()
 
 
 class CarVersionItem(scrapy.Item):

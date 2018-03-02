@@ -7,6 +7,7 @@ from yiche_spider import items
 import pypinyin
 from pypinyin.constants import Style
 
+
 class CarSpider(scrapy.Spider):
     name = 'car'
     allowed_domains = ['bitauto.com']
@@ -73,6 +74,7 @@ class CarSpider(scrapy.Spider):
             item['brand_third_id'] = dict_data[k]['pid']
             item['factory_third_id'] = dict_data[k]['goid']
             item['factory_name'] = dict_data[k]['goname']
+            item['sale_state'] = dict_data[k]['csSale']
             yield item
 
             print item['name']

@@ -300,9 +300,20 @@ class SyncCarDataToSDI(object):
 
     # 设置车辆面积级别
     def set_car_size_level(self):
-        sql = 'UPDATE base_car SET size_level = 1'
+        # sql = 'UPDATE base_car SET size_level = 1'
+        # self.cursor.execute(sql)
+        # self.conn.commit()
+
+        sql = '''UPDATE base_car a, base_yiche_car2level b SET a.size_level = (
+            CASE WHEN b.level_id = '63' THEN 1 
+            WHEN b.level_id = '8' THEN 2
+            else 3 END
+            ) WHERE a.third_id = b.car_third_id 
+            AND a.deleted = 0 AND a.third_id > 0 AND a.is_sync_third = 2 
+            AND b.level_id IN (SELECT level_id FROM base_yiche_car_level WHERE parent_level_id = 0);'''
         self.cursor.execute(sql)
         self.conn.commit()
+
         # sql = 'SELECT id base_car_version_attr WHERE attr = "seatnumber"'
         # self.cursor.execute(sql)
         # attr_result = self.cursor.fetchone()
@@ -530,7 +541,7 @@ if __name__ == '__main__':
     print '4、同步车款参数结束'
 
     print '5、同步车款参数值开始'
-    sync.sync_car_version_attr_data()
+    #sync.sync_car_version_attr_data()
     print '5、同步车款参数值结束'
 
     print '6、设置车名价格所属区间开始'
@@ -538,5 +549,5 @@ if __name__ == '__main__':
     print '6、设置车名价格所属区间结束'
 
     print '7、设置车名面积所属区间开始'
-    #sync.set_car_size_level()
+    sync.set_car_size_level()
     print '7、设置车名面积所属区间结束'
