@@ -279,20 +279,24 @@ class SyncCarDataToSDI(object):
         self.cursor.execute(sql)
         car_result = self.cursor.fetchall()
         for car in car_result:
-            sql = 'SELECT max(price) FROM base_car_version WHERE car_code = "%s"' % car[1]
+            sql = 'SELECT max(price),min(price),round(avg(price),2) FROM base_car_version WHERE price > 0 and car_code = "%s"' % car[1]
             self.cursor.execute(sql)
             version_result = self.cursor.fetchone()
-            max_price = 0
+            max_price = 0.00
+            min_price = 0.00
+            avg_price = 0.00
             if version_result and version_result[0]:
-                max_price = version_result[0]
+                max_price = float(version_result[0])
+                min_price = float(version_result[1])
+                avg_price = float(version_result[2])
 
             price_level = 1
             for level in level_result:
-                if (float(max_price) > int(level[1])):
+                if (max_price > float(level[1])):
                     price_level = int(level[0])
                     break
 
-            sql = 'UPDATE base_car SET price_level = %d WHERE id = %d' % (int(price_level), int(car[0]))
+            sql = 'UPDATE base_car SET price_level = %d, price_min = %s, price_max = %s, price_avg = %s WHERE id = %d' % (price_level, min_price, max_price, avg_price, int(car[0]))
             self.cursor.execute(sql)
             self.conn.commit()
             i += 1
@@ -300,9 +304,9 @@ class SyncCarDataToSDI(object):
 
     # 设置车辆面积级别
     def set_car_size_level(self):
-        # sql = 'UPDATE base_car SET size_level = 1'
-        # self.cursor.execute(sql)
-        # self.conn.commit()
+        sql = 'UPDATE base_car SET size_level = 3 WHERE is_sync_third = 2'
+        self.cursor.execute(sql)
+        self.conn.commit()
 
         sql = '''UPDATE base_car a, base_yiche_car2level b SET a.size_level = (
             CASE WHEN b.level_id = '63' THEN 1 
@@ -313,15 +317,6 @@ class SyncCarDataToSDI(object):
             AND b.level_id IN (SELECT level_id FROM base_yiche_car_level WHERE parent_level_id = 0);'''
         self.cursor.execute(sql)
         self.conn.commit()
-
-        # sql = 'SELECT id base_car_version_attr WHERE attr = "seatnumber"'
-        # self.cursor.execute(sql)
-        # attr_result = self.cursor.fetchone()
-        # if not attr_result or not attr_result[0]:
-        #     print '未找到座位数参数'
-        #     return
-        #
-        # sql = 'SELECT version_id base_car_version_attr_data WHERE attr_id = %d' % int(attr_result[0])
 
     # 获取自动累加器
     def get_counter_code(self, name):
@@ -549,5 +544,5 @@ if __name__ == '__main__':
     print '6、设置车名价格所属区间结束'
 
     print '7、设置车名面积所属区间开始'
-    sync.set_car_size_level()
+    #sync.set_car_size_level()
     print '7、设置车名面积所属区间结束'
