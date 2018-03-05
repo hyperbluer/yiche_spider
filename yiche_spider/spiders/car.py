@@ -66,7 +66,7 @@ class CarSpider(scrapy.Spider):
 
             priority -= 1
             url = self.external_urls['car_version_list'] % (third_id, third_id)
-            yield scrapy.Request(url, callback=self.parse_car_version_data, meta={'brand_name': name, 'car_name': name, 'check_data': 1}, priority=priority)
+            yield scrapy.Request(url, callback=self.parse_car_version_data, meta={'brand_name': response.meta['brand_name'], 'car_name': name, 'check_data': 1}, priority=priority)
 
     # 解析车款json串
     def parse_car_version_data(self, response):
