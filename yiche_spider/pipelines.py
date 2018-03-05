@@ -60,7 +60,10 @@ class YicheSpiderPipeline(object):
             else:
                 pass
         except MySQLdb.Error, e:
-            print "Error %d: %s" % (e.args[0], e.args[1])
+            if e.args[0] == 1062:
+                print 'PASS'
+            else:
+                print "Error %d: %s" % (e.args[0], e.args[1])
 
         return item
 

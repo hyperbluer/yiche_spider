@@ -17,7 +17,6 @@ class YicheSpiderItem(scrapy.Item):
 class BrandItem(scrapy.Item):
     third_id = scrapy.Field()
     name = scrapy.Field()
-    initial = scrapy.Field()
     logo = scrapy.Field()
     remote_logo = scrapy.Field()
 

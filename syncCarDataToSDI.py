@@ -47,7 +47,7 @@ class SyncCarDataToSDI(object):
     # 同步品牌
     def sync_car_brand(self):
         # 遍历所有易车车辆品牌
-        sql = 'SELECT third_id, `name`, initial, logo FROM base_yiche_car_brand'
+        sql = 'SELECT third_id, `name`, logo FROM base_yiche_car_brand'
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         i = 0
@@ -60,11 +60,9 @@ class SyncCarDataToSDI(object):
                 continue
 
             # 首字母处理
-            initial = None
-            if not row[2]:
-                initial = (pypinyin.lazy_pinyin(row[1], style=Style.FIRST_LETTER)[0]).upper()[0:1]
+            initial = (pypinyin.lazy_pinyin(row[1], style=Style.FIRST_LETTER)[0]).upper()[0:1]
 
-            logo = row[3]
+            logo = row[2]
             logo = logo.replace('full/', '/car_brand/')
 
             # 写入增量数据

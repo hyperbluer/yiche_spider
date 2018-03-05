@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'yiche_spider.spiders'
 #USER_AGENT = 'yiche_spider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -39,10 +39,12 @@ DOWNLOAD_DELAY = 1
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#}
+DEFAULT_REQUEST_HEADERS = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'accept-language': 'zh-CN,zh;q=0.8',
+    'referer': 'https://www.baidu.com/',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3251.0 Safari/537.36',
+}
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
@@ -53,7 +55,7 @@ DOWNLOAD_DELAY = 1
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    #'yiche_spider.middlewares.IgnoreDuplicatesDownloaderMiddleware': 543,
+    'yiche_spider.middlewares.IgnoreDuplicatesDownloaderMiddleware': 543,
 }
 
 # Enable or disable extensions
