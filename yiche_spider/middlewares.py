@@ -87,13 +87,12 @@ class IgnoreDuplicatesDownloaderMiddleware(object):
         sql = "SELECT data_uid FROM base_yiche_spider_logs WHERE page_uid = '%s' ORDER BY id DESC LIMIT 1 " % page_uid
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        if result:
-            if str(data_uid) == str(result[0]):
-                if page_uid == start_url_uid or ('check_data' in request.meta and request.meta['check_data']):
-                    response.headers['IGNORE-DATA'] = 1
-                    return response
-                else:
-                    raise IgnoreRequest()
+        if result and (str(data_uid) == str(result[0])):
+            if page_uid == start_url_uid or ('check_data' in request.meta and request.meta['check_data']):
+                response.headers['IGNORE-DATA'] = 1
+                return response
+            else:
+                raise IgnoreRequest()
 
         sql = 'INSERT INTO base_yiche_spider_logs (page_url, page_uid, data_uid) VALUES (%s, %s, %s)'
         params = (request.url, page_uid, data_uid)

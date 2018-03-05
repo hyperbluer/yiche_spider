@@ -18,6 +18,7 @@ class CarSpider(scrapy.Spider):
     custom_settings = {}
 
     def parse(self, response):
+        priority = 10000
         ignore_data = int(response.headers['IGNORE-DATA'])
         result = re.findall(r'type:\"(.*?)\",id:(.*?),name:\"(.*?)\",url:\"(.*?)\",cur', response.body)
         for brand in result:
@@ -35,11 +36,13 @@ class CarSpider(scrapy.Spider):
 
             print u'[品牌] ' + ('' if ignore_data else '+ ') + name
 
+            priority -= 1
             url = self.external_urls['car_list'] % (third_id, third_id)
-            yield scrapy.Request(url, callback=self.parse_car_data, meta={'brand_name': name, 'check_data': 1})
+            yield scrapy.Request(url, callback=self.parse_car_data, meta={'brand_name': name, 'check_data': 1}, priority=priority)
 
     # 解析车型json串
     def parse_car_data(self, response):
+        priority = 9000
         ignore_data = int(response.headers['IGNORE-DATA'])
         data = response.body
         dict_data = json.loads(data[data.find('{'):], strict=False)
@@ -59,10 +62,11 @@ class CarSpider(scrapy.Spider):
                 item['sale_state'] = dict_data[k]['csSale']
                 yield item
 
-            print u'[车型] ' + ('' if ignore_data else '+ ') + response.meta['brand_name'] + name
+            print u'[车型] ' + ('' if ignore_data else '+ ') + response.meta['brand_name'] + ' ' + name
 
+            priority -= 1
             url = self.external_urls['car_version_list'] % (third_id, third_id)
-            yield scrapy.Request(url, callback=self.parse_car_version_data, meta={'brand_name': name, 'car_name': name, 'check_data': 1})
+            yield scrapy.Request(url, callback=self.parse_car_version_data, meta={'brand_name': name, 'car_name': name, 'check_data': 1}, priority=priority)
 
     # 解析车款json串
     def parse_car_version_data(self, response):
@@ -85,7 +89,7 @@ class CarSpider(scrapy.Spider):
                 item['tt'] = dict_data[k]['tt']
                 yield item
 
-                car_version_full_name = response.meta['brand_name'] + response.meta['car_name'] + name
+                car_version_full_name = response.meta['brand_name'] + ' ' + response.meta['car_name'] + ' ' + name
                 print u'[车款] ' + ('' if ignore_data else '+ ') + car_version_full_name
 
                 url = self.external_urls['car_version_attr'] % third_id
