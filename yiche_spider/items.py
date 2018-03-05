@@ -47,11 +47,3 @@ class CarVersionAttrItem(scrapy.Item):
     car_version_third_id = scrapy.Field()
     content = scrapy.Field()
 
-
-class CarWmiItem(scrapy.Item):
-    wmi = scrapy.Field()
-    brand_name = scrapy.Field()
-    company_name = scrapy.Field()
-    reg_address = scrapy.Field()
-    car_style = scrapy.Field()
-    batch_number = scrapy.Field()
