@@ -19,7 +19,7 @@ class CarSpider(scrapy.Spider):
 
     def parse(self, response):
         priority = 10000
-        ignore_data = int(response.headers['IGNORE-DATA'])
+        ignore_data = int(response.headers['IGNORE-DATA']) if 'IGNORE-DATA' in response.headers else 0
         result = re.findall(r'type:\"(.*?)\",id:(.*?),name:\"(.*?)\",url:\"(.*?)\",cur', response.body)
         for brand in result:
             third_id = brand[1]
@@ -43,7 +43,7 @@ class CarSpider(scrapy.Spider):
     # 解析车型json串
     def parse_car_data(self, response):
         priority = 9000
-        ignore_data = int(response.headers['IGNORE-DATA'])
+        ignore_data = int(response.headers['IGNORE-DATA']) if 'IGNORE-DATA' in response.headers else 0
         data = response.body
         dict_data = json.loads(data[data.find('{'):], strict=False)
         for k in dict_data:
@@ -70,12 +70,15 @@ class CarSpider(scrapy.Spider):
 
     # 解析车款json串
     def parse_car_version_data(self, response):
-        ignore_data = int(response.headers['IGNORE-DATA'])
+        ignore_data = int(response.headers['IGNORE-DATA']) if 'IGNORE-DATA' in response.headers else 0
         data = response.body
         dict_data = json.loads(data[data.find('{'):], strict=False)
         for k in dict_data:
             third_id = dict_data[k]['id']
             name = dict_data[k]['name']
+
+            car_version_full_name = response.meta['brand_name'] + ' ' + response.meta['car_name'] + ' ' + name
+            print u'[车款] ' + ('' if ignore_data else '+ ') + car_version_full_name
 
             if not ignore_data:
                 # 保存车款入库
@@ -88,9 +91,6 @@ class CarSpider(scrapy.Spider):
                 item['year_type'] = dict_data[k]['goname']
                 item['tt'] = dict_data[k]['tt']
                 yield item
-
-                car_version_full_name = response.meta['brand_name'] + ' ' + response.meta['car_name'] + ' ' + name
-                print u'[车款] ' + ('' if ignore_data else '+ ') + car_version_full_name
 
                 url = self.external_urls['car_version_attr'] % third_id
                 yield scrapy.Request(url, callback=self.parse_car_version_attr_page, meta={'car_version_id': third_id, 'car_version_full_name': car_version_full_name})
