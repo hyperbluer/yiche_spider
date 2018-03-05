@@ -517,30 +517,79 @@ class SyncCarDataToSDI(object):
 
 if __name__ == '__main__':
     sync = SyncCarDataToSDI()
-    print '1、同步品牌开始'
-    #sync.sync_car_brand()
-    print '1、同步品牌结束'
+    print '是否同步品牌：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.sync_car_brand()
+            print '执行成功'
+    except Exception, e:
+        pass
 
-    print '2、同步车型开始'
-    #sync.sync_car()
-    print '2、同步车型结束'
+    print '是否同步车型：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.sync_car()
+            print '执行成功'
+    except Exception, e:
+        pass
 
-    print '3、同步车款开始'
-    #sync.sync_car_version()
-    print '3、同步车款结束'
+    print '是否同步车款：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.sync_car_version()
+            print '执行成功'
+    except Exception, e:
+        pass
 
-    print '4、同步车款参数开始'
-    #sync.sync_car_version_attr()
-    print '4、同步车款参数结束'
+    print '是否同步车款参数：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.sync_car_version_attr()
+            print '执行成功'
+    except Exception, e:
+        pass
 
-    print '5、同步车款参数值开始'
-    #sync.sync_car_version_attr_data()
-    print '5、同步车款参数值结束'
+    print '是否同步车款参数值：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.sync_car_version_attr_data()
+            print '执行成功'
+    except Exception, e:
+        pass
 
-    print '6、设置车名价格所属区间开始'
-    #sync.set_car_price_level()
-    print '6、设置车名价格所属区间结束'
+    print '是否设置车名价格所属区间：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.set_car_price_level()
+            print '执行成功'
+    except SyntaxError, e:
+        pass
 
-    print '7、设置车名面积所属区间开始'
-    #sync.set_car_size_level()
-    print '7、设置车名面积所属区间结束'
+    print '是否设置车名面积所属区间：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.set_car_size_level()
+            print '执行成功'
+    except Exception, e:
+        pass
