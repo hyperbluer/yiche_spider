@@ -15,15 +15,6 @@ MYSQL_CONFIG = {
     'port': 3306,
     'charset': 'utf8',
 }
-# 开发线
-# MYSQL_CONFIG = {
-#     'host': '116.205.13.101',
-#     'dbname': 'database',
-#     'user': 'root',
-#     'passwd': 'QVmGZw5dC9nnQ3Lt',
-#     'port': 3309,
-#     'charset': 'utf8',
-# }
 
 COUNTER_CODE_CONFIG = {
     'brand': 'BRAD',
@@ -524,7 +515,7 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.sync_car_brand()
-            print '执行成功'
+            print '......执行成功'
     except Exception, e:
         pass
 
@@ -535,7 +526,7 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.sync_car()
-            print '执行成功'
+            print '......执行成功'
     except Exception, e:
         pass
 
@@ -546,7 +537,7 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.sync_car_version()
-            print '执行成功'
+            print '......执行成功'
     except Exception, e:
         pass
 
@@ -557,7 +548,7 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.sync_car_version_attr()
-            print '执行成功'
+            print '......执行成功'
     except Exception, e:
         pass
 
@@ -568,7 +559,7 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.sync_car_version_attr_data()
-            print '执行成功'
+            print '......执行成功'
     except Exception, e:
         pass
 
@@ -579,7 +570,7 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.set_car_price_level()
-            print '执行成功'
+            print '......执行成功'
     except SyntaxError, e:
         pass
 
@@ -590,6 +581,6 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.set_car_size_level()
-            print '执行成功'
+            print '......执行成功'
     except Exception, e:
         pass
