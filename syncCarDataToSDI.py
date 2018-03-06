@@ -227,11 +227,11 @@ class SyncCarDataToSDI(object):
         version_result = self.cursor.fetchall()
         for version in version_result:
             # 判断库中是否有此车款参数值数据
-            # sql = 'SELECT count(*) AS c FROM base_car_version_attr_data WHERE version_code = "%s"' % version[0]
-            # self.cursor.execute(sql)
-            # result = self.cursor.fetchone()
-            # if result and result[0]:
-            #     continue
+            sql = 'SELECT count(*) AS c FROM base_car_version_attr_data WHERE version_code = "%s"' % version[0]
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result and result[0]:
+                continue
 
             # 每插入10000条数据休眠1秒
             # if not (i % 10000):
