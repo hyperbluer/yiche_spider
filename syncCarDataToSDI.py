@@ -44,7 +44,7 @@ class SyncCarDataToSDI(object):
         i = 0
         for row in result:
             # 检测数据库是否已经同步过此数据
-            check_sql = 'SELECT count(*) AS c FROM base_car_brand WHERE third_id = %s AND is_sync_third = 2' % row[0]
+            check_sql = 'SELECT count(*) AS c FROM base_car_brand WHERE third_id = %s AND is_sync_third = 1' % row[0]
             self.cursor.execute(check_sql)
             check_result = self.cursor.fetchone()
             if check_result and check_result[0]:
@@ -57,7 +57,7 @@ class SyncCarDataToSDI(object):
             logo = logo.replace('full/', '/car_brand/')
 
             # 写入增量数据
-            insert_sql = 'INSERT INTO base_car_brand (brand_code, third_id, `name`, first_char, logo, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, %s, 2, %s)'
+            insert_sql = 'INSERT INTO base_car_brand (brand_code, third_id, `name`, first_char, logo, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, %s, 1, %s)'
             params = (self.get_counter_code(COUNTER_CODE_CONFIG['brand']), row[0], row[1], initial, logo, int(time.time()))
             self.cursor.execute(insert_sql, params)
 
@@ -75,20 +75,20 @@ class SyncCarDataToSDI(object):
         i = 0
         for row in result:
             # 查询品牌code
-            brand_sql = 'SELECT brand_code FROM base_car_brand WHERE third_id = %s AND is_sync_third = 2' % row[3]
+            brand_sql = 'SELECT brand_code FROM base_car_brand WHERE third_id = %s AND is_sync_third = 1' % row[3]
             self.cursor.execute(brand_sql)
             brand_result = self.cursor.fetchone()
             if not brand_result or not brand_result[0]:
                 continue
 
             # 查询厂商
-            factory_sql = 'SELECT factory_code FROM base_car_factory WHERE third_id = %s AND is_sync_third = 2' % row[4]
+            factory_sql = 'SELECT factory_code FROM base_car_factory WHERE third_id = %s AND is_sync_third = 1' % row[4]
             self.cursor.execute(factory_sql)
             factory_result = self.cursor.fetchone()
             if not factory_result or not factory_result[0]:
                 # 写入厂商增量数据
                 factory_code = self.get_counter_code(COUNTER_CODE_CONFIG['factory'])
-                insert_sql = 'INSERT INTO base_car_factory (brand_code, factory_code, `name`, third_id, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, 2, %s)'
+                insert_sql = 'INSERT INTO base_car_factory (brand_code, factory_code, `name`, third_id, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, 1, %s)'
                 params = (brand_result[0], factory_code, row[5], row[4],
                           int(time.time()))
                 self.cursor.execute(insert_sql, params)
@@ -96,7 +96,7 @@ class SyncCarDataToSDI(object):
                 factory_code = factory_result[0]
 
             # 查询车名
-            car_sql = 'SELECT id, car_code, factory_code FROM base_car WHERE third_id = %s AND is_sync_third = 2' % row[0]
+            car_sql = 'SELECT id, car_code, factory_code FROM base_car WHERE third_id = %s AND is_sync_third = 1' % row[0]
             self.cursor.execute(car_sql)
             car_result = self.cursor.fetchone()
             if car_result and car_result[0]:
@@ -106,7 +106,7 @@ class SyncCarDataToSDI(object):
                 continue
 
             # 写入增量数据
-            insert_sql = 'INSERT INTO base_car (brand_code, factory_code, car_code, `name`, name_alias, third_id, price_level, size_level, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, %s, %s, 0, 0, 2, %s)'
+            insert_sql = 'INSERT INTO base_car (brand_code, factory_code, car_code, `name`, name_alias, third_id, price_level, size_level, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, %s, %s, 0, 0, 1, %s)'
             params = (brand_result[0], factory_code, self.get_counter_code(COUNTER_CODE_CONFIG['car']), row[1], row[2], row[0], int(time.time()))
             self.cursor.execute(insert_sql, params)
 
@@ -124,14 +124,14 @@ class SyncCarDataToSDI(object):
         i = 0
         for row in result:
             # 检测数据库是否已经同步过此数据
-            check_sql = 'SELECT count(*) AS c FROM base_car_version WHERE third_id = %s AND is_sync_third = 2' % row[1]
+            check_sql = 'SELECT count(*) AS c FROM base_car_version WHERE third_id = %s AND is_sync_third = 1' % row[1]
             self.cursor.execute(check_sql)
             check_result = self.cursor.fetchone()
             if check_result and check_result[0]:
                 continue
 
             # 查询车型code
-            car_sql = 'SELECT brand_code,car_code FROM base_car WHERE third_id = %s AND is_sync_third = 2' % row[0]
+            car_sql = 'SELECT brand_code,car_code,factory_code FROM base_car WHERE third_id = %s AND is_sync_third = 1' % row[0]
             self.cursor.execute(car_sql)
             car_result = self.cursor.fetchone()
             if not car_result or not car_result[1]:
@@ -143,8 +143,8 @@ class SyncCarDataToSDI(object):
                 year_type = (row[4])[0:4]
 
             # 写入增量数据
-            insert_sql = 'INSERT INTO base_car_version (brand_code, car_code, version_code, `name`, price, yeartype, salestate, third_id, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 2, %s)'
-            params = (car_result[0], car_result[1], self.get_counter_code(COUNTER_CODE_CONFIG['car_version']), row[2], row[3], year_type, row[5], row[1], int(time.time()))
+            insert_sql = 'INSERT INTO base_car_version (brand_code, car_code, factory_code, version_code, `name`, price, yeartype, salestate, third_id, is_sync_third, updated_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 1, %s)'
+            params = (car_result[0], car_result[1], car_result[2], self.get_counter_code(COUNTER_CODE_CONFIG['car_version']), row[2], row[3], year_type, row[5], row[1], int(time.time()))
             self.cursor.execute(insert_sql, params)
 
             i += 1
@@ -222,7 +222,7 @@ class SyncCarDataToSDI(object):
             attr_sub_result[k] = row
 
         # 遍历所有车型
-        sql = 'SELECT version_code,third_id FROM base_car_version WHERE is_sync_third = 2 ORDER BY id ASC'
+        sql = 'SELECT version_code,third_id FROM base_car_version WHERE is_sync_third = 1 ORDER BY id ASC'
         self.cursor.execute(sql)
         version_result = self.cursor.fetchall()
         for version in version_result:
@@ -264,7 +264,7 @@ class SyncCarDataToSDI(object):
         self.cursor.execute(sql)
         level_result = self.cursor.fetchall()
 
-        sql = 'SELECT id, car_code FROM base_car WHERE is_sync_third = 2 ORDER BY id ASC'
+        sql = 'SELECT id, car_code FROM base_car WHERE is_sync_third = 1 ORDER BY id ASC'
         self.cursor.execute(sql)
         car_result = self.cursor.fetchall()
         for car in car_result:
@@ -279,11 +279,14 @@ class SyncCarDataToSDI(object):
                 min_price = float(version_result[1])
                 avg_price = float(version_result[2])
 
-            price_level = 1
-            for level in level_result:
-                if (max_price > float(level[1])):
-                    price_level = int(level[0])
-                    break
+            if not avg_price:
+                price_level = 0
+            else:
+                price_level = 1
+                for level in level_result:
+                    if (max_price > float(level[1])):
+                        price_level = int(level[0])
+                        break
 
             sql = 'UPDATE base_car SET price_level = %d, price_min = %s, price_max = %s, price_avg = %s WHERE id = %d' % (price_level, min_price, max_price, avg_price, int(car[0]))
             self.cursor.execute(sql)
@@ -293,7 +296,7 @@ class SyncCarDataToSDI(object):
 
     # 设置车辆面积级别
     def set_car_size_level(self):
-        sql = 'UPDATE base_car SET size_level = 3 WHERE is_sync_third = 2'
+        sql = 'UPDATE base_car SET size_level = 3 WHERE is_sync_third = 1'
         self.cursor.execute(sql)
         self.conn.commit()
 
@@ -302,10 +305,23 @@ class SyncCarDataToSDI(object):
             WHEN b.level_id = '8' THEN 2
             else 3 END
             ) WHERE a.third_id = b.car_third_id 
-            AND a.deleted = 0 AND a.third_id > 0 AND a.is_sync_third = 2 
-            AND b.level_id IN (SELECT level_id FROM base_yiche_car_level WHERE parent_level_id = 0);'''
+            AND a.third_id > 0 AND a.is_sync_third = 1 
+            AND b.level_id IN (SELECT level_id FROM base_yiche_car_level WHERE parent_level_id = 0)'''
         self.cursor.execute(sql)
         self.conn.commit()
+
+    #修复异常数据
+    def repair_abnormal_data(self):
+        print '逻辑删除无价格的车款'
+        sql = 'UPDATE base_car_version SET deleted = 1 WHERE is_sync_third = 1 AND price <=0'
+        self.cursor.execute(sql)
+        self.conn.commit()
+
+        print '逻辑删除无价格的车型'
+        sql = 'UPDATE base_car SET deleted = 1 WHERE is_sync_third = 1 AND price_max <=0'
+        self.cursor.execute(sql)
+        self.conn.commit()
+
 
     # 获取自动累加器
     def get_counter_code(self, name):
@@ -581,6 +597,17 @@ if __name__ == '__main__':
         flag = int(input('请选择：（默认为0）'))
         if flag == 1:
             sync.set_car_size_level()
+            print '......执行成功'
+    except Exception, e:
+        pass
+
+    print '是否修复异常数据：'
+    print '1. 是'
+    print '0. 否'
+    try:
+        flag = int(input('请选择：（默认为0）'))
+        if flag == 1:
+            sync.repair_abnormal_data()
             print '......执行成功'
     except Exception, e:
         pass
