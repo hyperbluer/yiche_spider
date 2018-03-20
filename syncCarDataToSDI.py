@@ -284,7 +284,7 @@ class SyncCarDataToSDI(object):
             else:
                 price_level = 1
                 for level in level_result:
-                    if (max_price > float(level[1])):
+                    if (avg_price > float(level[1])):
                         price_level = int(level[0])
                         break
 
