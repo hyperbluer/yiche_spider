@@ -8,7 +8,7 @@ from yiche_spider import items
 class CarSpider(scrapy.Spider):
     name = 'car'
     allowed_domains = ['bitauto.com']
-    start_urls = ['http://api.car.bitauto.com/CarInfo/getlefttreejson.ashx?tagtype=baojia&pagetype=&objid=']
+    start_urls = ['http://api.car.bitauto.com/CarInfo/getlefttreejson.ashx?tagtype=chexing&pagetype=&objid=']
     external_urls = {
         'brand_logo_img_path': 'http://image.bitautoimg.com/bt/car/default/images/logo/masterbrand/png/100/m_%s_100.png',
         'car_list': 'http://api.car.bitauto.com/CarInfo/MasterBrandToSerialNew.aspx?type=5&pid=%s&rt=serial&serias=m&key=serial_%s_5_m&include=1',
@@ -21,6 +21,7 @@ class CarSpider(scrapy.Spider):
         priority = 10000
         ignore_data = int(response.headers['IGNORE-DATA']) if 'IGNORE-DATA' in response.headers else 0
         result = re.findall(r'type:\"(.*?)\",id:(.*?),name:\"(.*?)\",url:\"(.*?)\",cur', response.body)
+
         for brand in result:
             third_id = brand[1]
             name = brand[2].decode('utf-8')
